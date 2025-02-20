@@ -30,7 +30,9 @@ export class AuthRepository {
   async create(body: IAuthCreate): Promise<Users> {
     const data = this.AuthRepository.create(body);
 
-    return this.AuthRepository.save(data);
+    return this.AuthRepository.save(data).catch((error) => {
+      throw new Error(error.message);
+    });
   }
 
   async updatePassword(id: number, body: IAuthUpdatePassword): Promise<Users> {
@@ -45,25 +47,23 @@ export class AuthRepository {
           return this.AuthRepository.findOne({ where: { id: id } });
         }
       })
-      .catch();
+      .catch((error) => {
+        throw new Error(error.message);
+      });
 
     return data;
   }
 
-  async login(id: number, token: string): Promise<Users> {
+  async login(id: number, token: string) {
     const oldData = await this.AuthRepository.findOne({ where: { id: id } });
     const data = this.AuthRepository.update(
       {
         id: id,
       },
-      { ...oldData, token: token },
-    )
-      .then((result) => {
-        if (result.affected) {
-          return this.AuthRepository.findOne({ where: { id: id } });
-        }
-      })
-      .catch();
+      { ...oldData, token: token, updated_at: new Date() },
+    ).catch((error) => {
+      throw new Error(error.message);
+    });
 
     return data;
   }

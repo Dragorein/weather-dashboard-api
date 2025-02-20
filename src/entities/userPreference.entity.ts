@@ -2,28 +2,34 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserPreferences } from './userPreference.entity';
+import { Users } from './user.entity';
 
-@Entity()
-export class Users {
+@Entity('user_preference')
+export class UserPreferences {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column()
-  name: string;
+  @ManyToOne(() => Users, (user) => user.preferences, { onDelete: 'CASCADE' })
+  user: Users;
 
   @Column()
-  email: string;
+  location: string;
 
-  @Column({ type: 'text' })
-  password: string;
+  @Column()
+  region: string;
 
-  @Column({ type: 'text' })
-  token: string;
+  @Column()
+  country: string;
+
+  @Column()
+  lon: number;
+
+  @Column()
+  lat: number;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
@@ -33,7 +39,4 @@ export class Users {
 
   @Column({ type: 'boolean' })
   deleted: boolean;
-
-  @OneToMany(() => UserPreferences, (preference) => preference.user)
-  preferences: UserPreferences[];
 }

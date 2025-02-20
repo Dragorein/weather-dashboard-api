@@ -1,26 +1,23 @@
 import { EWindDirection } from 'src/common/enums/weather.enum';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { WeatherForecast } from './weatherForecast.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Weather } from './weather.entity';
 
-@Entity()
-export class Weather {
+@Entity('weather')
+export class WeatherForecast {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column()
-  name: string;
-
-  @Column()
-  region: string;
-
-  @Column()
-  country: string;
-
-  @Column()
-  lon: number;
-
-  @Column()
-  lat: number;
+  @ManyToOne(() => Weather, (weather) => weather.forecasts, {
+    onDelete: 'CASCADE',
+  })
+  weather: Weather;
 
   @Column()
   condition: string;
@@ -61,11 +58,12 @@ export class Weather {
   @Column()
   gust_mph: number;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  datetime: Date;
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
 
-  @OneToMany(() => WeatherForecast, (forecast) => forecast.weather, {
-    onDelete: 'CASCADE',
-  })
-  forecasts: WeatherForecast[];
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updated_at: Date;
+
+  @Column({ type: 'boolean' })
+  deleted: boolean;
 }

@@ -1,10 +1,17 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
-export class CreateUserTable1740027403834 implements MigrationInterface {
+export class CreateUserPreferenceTable1740036050036
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'users',
+        name: 'user_preference',
         columns: [
           {
             name: 'id',
@@ -13,24 +20,34 @@ export class CreateUserTable1740027403834 implements MigrationInterface {
             default: 'gen_random_uuid()',
           },
           {
-            name: 'name',
+            name: 'user_id',
+            type: 'uuid',
+            isNullable: false,
+          },
+          {
+            name: 'location',
             type: 'varchar',
             isNullable: false,
           },
           {
-            name: 'email',
+            name: 'region',
             type: 'varchar',
             isNullable: false,
           },
           {
-            name: 'password',
-            type: 'text',
+            name: 'country',
+            type: 'varchar',
             isNullable: false,
           },
           {
-            name: 'token',
-            type: 'text',
-            isNullable: true,
+            name: 'lon',
+            type: 'decimal',
+            isNullable: false,
+          },
+          {
+            name: 'lat',
+            type: 'decimal',
+            isNullable: false,
           },
           {
             name: 'created_at',
@@ -51,9 +68,19 @@ export class CreateUserTable1740027403834 implements MigrationInterface {
         ],
       }),
     );
+
+    await queryRunner.createForeignKey(
+      'user_preference',
+      new TableForeignKey({
+        columnNames: ['user_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+        onDelete: 'CASCADE',
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users');
+    await queryRunner.dropTable('user_preference');
   }
 }

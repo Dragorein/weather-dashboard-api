@@ -62,7 +62,11 @@ export class AuthServiceV1 {
         email: checkExist.email,
       };
 
-      return this.jwtService.sign(payload);
+      const token = this.jwtService.sign(payload);
+
+      await this.authRepository.login(checkExist.id, token);
+
+      return token;
     } catch (error) {
       throw new Error(error.message);
     }
