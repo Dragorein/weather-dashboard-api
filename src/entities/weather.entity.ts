@@ -52,13 +52,13 @@ export class Weather {
   windchill_c: number;
 
   @Column()
-  heatindex_c: number;
+  heat_index_c: number;
 
   @Column()
   uv: number;
 
   @Column()
-  gust_mph: number;
+  gust_kph: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   datetime: Date;

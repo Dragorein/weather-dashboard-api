@@ -101,7 +101,7 @@ export class CreateWeatherForcastTable1740036508757
             isNullable: false,
           },
           {
-            name: 'gust_mph',
+            name: 'gust_kph',
             type: 'decimal',
             isNullable: false,
           },

@@ -64,7 +64,7 @@ export class WeatherForecast {
   uv: number;
 
   @Column()
-  gust_mph: number;
+  gust_kph: number;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
