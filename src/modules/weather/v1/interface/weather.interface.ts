@@ -1,1 +1,3 @@
-export class IWeatherCreate {}
+export class IWeatherCreate {
+  location: string;
+}

@@ -1,25 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { ReqCreateWeatherDTO, ReqUpdateWeatherDTO } from './dto/request.dto';
+import { WeatherRepository } from '../weather.repository';
+import { GetCurrentWeather } from 'src/common/axios/weather';
 
 @Injectable()
 export class WeatherServiceV1 {
-  async create(createWeatherDto: ReqCreateWeatherDTO) {
-    return 'This action adds a new weather';
-  }
+  constructor(private readonly weatherRepository: WeatherRepository) {}
 
   async findAll() {
     return `This action returns all weather`;
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} weather`;
-  }
+  async getCurrent(location: string) {
+    const data = await GetCurrentWeather(location, false);
 
-  async update(id: number, updateWeatherDto: ReqUpdateWeatherDTO) {
-    return `This action updates a #${id} weather`;
-  }
-
-  async remove(id: number) {
-    return `This action removes a #${id} weather`;
+    return data;
   }
 }

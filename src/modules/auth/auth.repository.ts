@@ -11,40 +11,43 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class AuthRepository {
   constructor(
     @InjectRepository(Users)
-    private readonly AuthRepository: Repository<Users>,
+    private readonly authRepository: Repository<Users>,
   ) {}
 
   async checkEmail(email: string): Promise<Users> {
-    const data = this.AuthRepository.findOne({
-      where: {
-        email: email,
-        deleted: false,
-      },
-    }).catch((error) => {
-      throw new Error(error.message);
-    });
+    const data = this.authRepository
+      .findOne({
+        where: {
+          email: email,
+          deleted: false,
+        },
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
 
     return data;
   }
 
   async create(body: IAuthCreate): Promise<Users> {
-    const data = this.AuthRepository.create(body);
+    const data = this.authRepository.create(body);
 
-    return this.AuthRepository.save(data).catch((error) => {
+    return this.authRepository.save(data).catch((error) => {
       throw new Error(error.message);
     });
   }
 
   async updatePassword(id: string, body: IAuthUpdatePassword): Promise<Users> {
-    const data = this.AuthRepository.update(
-      {
-        id: id,
-      },
-      body,
-    )
+    const data = this.authRepository
+      .update(
+        {
+          id: id,
+        },
+        body,
+      )
       .then((result) => {
         if (result.affected) {
-          return this.AuthRepository.findOne({ where: { id: id } });
+          return this.authRepository.findOne({ where: { id: id } });
         }
       })
       .catch((error) => {
@@ -55,15 +58,17 @@ export class AuthRepository {
   }
 
   async login(id: string, token: string) {
-    const oldData = await this.AuthRepository.findOne({ where: { id: id } });
-    const data = this.AuthRepository.update(
-      {
-        id: id,
-      },
-      { ...oldData, token: token, updated_at: new Date() },
-    ).catch((error) => {
-      throw new Error(error.message);
-    });
+    const oldData = await this.authRepository.findOne({ where: { id: id } });
+    const data = this.authRepository
+      .update(
+        {
+          id: id,
+        },
+        { ...oldData, token: token, updated_at: new Date() },
+      )
+      .catch((error) => {
+        throw new Error(error.message);
+      });
 
     return data;
   }

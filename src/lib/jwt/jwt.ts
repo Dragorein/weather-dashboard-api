@@ -13,9 +13,6 @@ export async function JWTSign(userId: string) {
   }
 }
 export async function JWTVerify(token: string): Promise<any> {
-  console.log('token', token);
-  console.log('JWT_KEY', process.env.JWT_KEY);
-
   try {
     return jwt.verify(token, process.env.JWT_KEY);
   } catch (err) {

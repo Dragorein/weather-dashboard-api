@@ -7,15 +7,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class UserRepository {
   constructor(
     @InjectRepository(Users)
-    private readonly UserRepository: Repository<Users>,
+    private readonly userRepository: Repository<Users>,
   ) {}
 
   async findDetail(user: string): Promise<Users> {
-    const data = await this.UserRepository.findOne({
-      where: { id: user },
-    }).catch((error) => {
-      throw new Error(error.message);
-    });
+    const data = await this.userRepository
+      .findOne({
+        where: { id: user },
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
 
     return data;
   }
