@@ -31,7 +31,7 @@ export class CreateUserTable1740027403834 implements MigrationInterface {
           {
             name: 'token',
             type: 'text',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'created_at',

@@ -4,35 +4,82 @@ import {
   IAuthLogin,
   IAuthUpdatePassword,
 } from './interface/auth.interface';
+import { Users } from 'src/entities/user.entity';
+import { ComparePassword, HashPassword } from 'src/lib/bcrypt/bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { AuthRepository } from '../auth.repository';
 
 @Injectable()
 export class AuthServiceV1 {
-  create(createAuthI: IAuthCreate) {
-    return {
-      msg: 'This action adds a new auth',
-      input: createAuthI,
-    };
+  constructor(
+    private readonly authRepository: AuthRepository,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  async create(createAuthI: IAuthCreate) {
+    try {
+      const checkExist = await this.authRepository.checkEmail(
+        createAuthI.email,
+      );
+
+      if (checkExist) {
+        throw new Error('Email already taken');
+      }
+
+      const registerBody = new Users();
+      registerBody.name = createAuthI.name;
+      registerBody.email = createAuthI.email;
+      registerBody.password = await HashPassword(createAuthI.password);
+
+      const data = await this.authRepository.create(registerBody);
+
+      return data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
-  login(loginI: IAuthLogin) {
-    return {
-      msg: 'This action login a user',
-      input: loginI,
-    };
+  async login(loginI: IAuthLogin) {
+    try {
+      const checkExist = await this.authRepository.checkEmail(loginI.email);
+
+      if (!checkExist) {
+        throw new Error("User doesn't exist");
+      }
+
+      const checkPassword = await ComparePassword(
+        loginI.password,
+        checkExist.password,
+      );
+
+      if (!checkPassword) {
+        throw new Error('wrong password / wrong email');
+      }
+
+      const payload = {
+        id: checkExist.id,
+        name: checkExist.name,
+        email: checkExist.email,
+      };
+
+      return this.jwtService.sign(payload);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return `This action returns a #${id} auth`;
   }
 
-  update(id: number, updateAuthI: IAuthUpdatePassword) {
+  async update(id: number, updateAuthI: IAuthUpdatePassword) {
     return {
       msg: `This action updates a #${id} auth`,
       input: updateAuthI,
     };
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} auth`;
   }
 }

@@ -1,4 +1,5 @@
 export interface IJwtUser {
-  userId: number;
-  iat: number;
+  id: number;
+  name: string;
+  email: string;
 }

@@ -12,7 +12,7 @@ export async function JWTSign(userId: number) {
     throw new InternalServerErrorException();
   }
 }
-export async function JWTVerify(token: string) {
+export async function JWTVerify(token: string): Promise<any> {
   try {
     return jwt.verify(token, process.env.JWT_KEY);
   } catch (err) {
