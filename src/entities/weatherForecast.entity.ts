@@ -3,21 +3,29 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Weather } from './weather.entity';
 
 @Entity('weather')
 export class WeatherForecast {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @ManyToOne(() => Weather, (weather) => weather.forecasts, {
-    onDelete: 'CASCADE',
-  })
-  weather: Weather;
+  @Column()
+  name: string;
+
+  @Column()
+  region: string;
+
+  @Column()
+  country: string;
+
+  @Column()
+  lon: number;
+
+  @Column()
+  lat: number;
 
   @Column()
   condition: string;

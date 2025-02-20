@@ -1,6 +1,5 @@
 import { EWindDirection } from 'src/common/enums/weather.enum';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { WeatherForecast } from './weatherForecast.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Weather {
@@ -63,9 +62,4 @@ export class Weather {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   datetime: Date;
-
-  @OneToMany(() => WeatherForecast, (forecast) => forecast.weather, {
-    onDelete: 'CASCADE',
-  })
-  forecasts: WeatherForecast[];
 }

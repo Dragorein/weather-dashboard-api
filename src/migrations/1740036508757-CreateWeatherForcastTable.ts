@@ -1,9 +1,4 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class CreateWeatherForcastTable1740036508757
   implements MigrationInterface
@@ -20,8 +15,28 @@ export class CreateWeatherForcastTable1740036508757
             default: 'gen_random_uuid()',
           },
           {
-            name: 'weather_id',
-            type: 'uuid',
+            name: 'name',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'region',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'country',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'lon',
+            type: 'float',
+            isNullable: false,
+          },
+          {
+            name: 'lat',
+            type: 'float',
             isNullable: false,
           },
           {
@@ -107,16 +122,6 @@ export class CreateWeatherForcastTable1740036508757
             default: false,
           },
         ],
-      }),
-    );
-
-    await queryRunner.createForeignKey(
-      'weather_forecast',
-      new TableForeignKey({
-        columnNames: ['weather_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'weather',
-        onDelete: 'CASCADE',
       }),
     );
   }
