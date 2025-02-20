@@ -1,1 +1,3 @@
-export class IUserCreate {}
+export class IUserDetail {
+  userId: string;
+}

@@ -10,7 +10,7 @@ import {
 @Entity('weather')
 export class WeatherForecast {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column()
   name: string;

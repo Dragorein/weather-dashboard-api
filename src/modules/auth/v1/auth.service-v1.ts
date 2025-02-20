@@ -6,15 +6,12 @@ import {
 } from './interface/auth.interface';
 import { Users } from 'src/entities/user.entity';
 import { ComparePassword, HashPassword } from 'src/lib/bcrypt/bcrypt';
-import { JwtService } from '@nestjs/jwt';
 import { AuthRepository } from '../auth.repository';
+import { JWTSign } from 'src/lib/jwt/jwt';
 
 @Injectable()
 export class AuthServiceV1 {
-  constructor(
-    private readonly authRepository: AuthRepository,
-    private readonly jwtService: JwtService,
-  ) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
   async create(createAuthI: IAuthCreate) {
     try {
@@ -56,13 +53,7 @@ export class AuthServiceV1 {
         throw new Error('wrong password / wrong email');
       }
 
-      const payload = {
-        id: checkExist.id,
-        name: checkExist.name,
-        email: checkExist.email,
-      };
-
-      const token = this.jwtService.sign(payload);
+      const token = await JWTSign(checkExist.id);
 
       await this.authRepository.login(checkExist.id, token);
 

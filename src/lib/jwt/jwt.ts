@@ -4,7 +4,7 @@ import {
 } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 
-export async function JWTSign(userId: number) {
+export async function JWTSign(userId: string) {
   try {
     return jwt.sign({ userId: userId }, process.env.JWT_KEY);
   } catch (err) {
@@ -13,6 +13,9 @@ export async function JWTSign(userId: number) {
   }
 }
 export async function JWTVerify(token: string): Promise<any> {
+  console.log('token', token);
+  console.log('JWT_KEY', process.env.JWT_KEY);
+
   try {
     return jwt.verify(token, process.env.JWT_KEY);
   } catch (err) {

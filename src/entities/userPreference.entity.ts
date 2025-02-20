@@ -11,7 +11,7 @@ import { Users } from './user.entity';
 @Entity('user_preference')
 export class UserPreferences {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @ManyToOne(() => Users, (user) => user.preferences, { onDelete: 'CASCADE' })
   user: Users;

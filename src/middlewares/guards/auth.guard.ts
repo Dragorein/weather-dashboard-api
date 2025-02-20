@@ -12,7 +12,7 @@ import { JWTVerify } from '../../lib/jwt/jwt';
 export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = request.headers.authorization;
+    const token: string = request.headers.authorization;
 
     if (!token) {
       throw new UnauthorizedException();
@@ -20,7 +20,8 @@ export class AuthGuard implements CanActivate {
 
     try {
       // Validate JWT Token
-      const decoded: IJwtUser = await JWTVerify(token);
+      const tokenValue = token.split(' ');
+      const decoded: IJwtUser = await JWTVerify(tokenValue[1]);
       request.user = decoded;
 
       return true;

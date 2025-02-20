@@ -35,7 +35,7 @@ export class AuthRepository {
     });
   }
 
-  async updatePassword(id: number, body: IAuthUpdatePassword): Promise<Users> {
+  async updatePassword(id: string, body: IAuthUpdatePassword): Promise<Users> {
     const data = this.AuthRepository.update(
       {
         id: id,
@@ -54,7 +54,7 @@ export class AuthRepository {
     return data;
   }
 
-  async login(id: number, token: string) {
+  async login(id: string, token: string) {
     const oldData = await this.AuthRepository.findOne({ where: { id: id } });
     const data = this.AuthRepository.update(
       {
