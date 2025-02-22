@@ -1,5 +1,12 @@
-import { EWindDirection } from 'src/common/enums/weather.enum';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Forecast } from './weatherForecast.entity';
 
 @Entity()
 export class Weather {
@@ -7,7 +14,7 @@ export class Weather {
   id: string;
 
   @Column()
-  name: string;
+  city: string;
 
   @Column()
   region: string;
@@ -15,10 +22,10 @@ export class Weather {
   @Column()
   country: string;
 
-  @Column()
+  @Column({ type: 'float' })
   lon: number;
 
-  @Column()
+  @Column({ type: 'float' })
   lat: number;
 
   @Column()
@@ -27,39 +34,51 @@ export class Weather {
   @Column()
   condition_img: string;
 
-  @Column()
+  @Column({ type: 'int' })
   humidity: number;
 
-  @Column()
+  @Column({ type: 'int' })
   cloud: number;
 
-  @Column()
-  wind_kph: number;
-
-  @Column({ type: 'enum', enum: EWindDirection })
-  wind_dir: EWindDirection;
-
-  @Column()
+  @Column({ type: 'float' })
   precip_mm: number;
 
-  @Column()
+  @Column({ type: 'float' })
   temp_c: number;
 
-  @Column()
+  @Column({ type: 'float' })
+  temp_f: number;
+
+  @Column({ type: 'float' })
   temp_feel_c: number;
 
-  @Column()
-  windchill_c: number;
+  @Column({ type: 'float' })
+  temp_feel_f: number;
 
-  @Column()
+  @Column({ type: 'float' })
   heat_index_c: number;
 
-  @Column()
+  @Column({ type: 'float' })
+  heat_index_f: number;
+
+  @Column({ type: 'float' })
   uv: number;
 
-  @Column()
-  gust_kph: number;
+  @Column({ type: 'date' })
+  date: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  datetime: Date;
+  @Column({ type: 'time' })
+  time: string;
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
+
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updated_at: Date;
+
+  @Column({ type: 'boolean' })
+  deleted: boolean;
+
+  @OneToMany(() => Forecast, (forecast) => forecast.weather, { cascade: true })
+  forecasts: Forecast[];
 }

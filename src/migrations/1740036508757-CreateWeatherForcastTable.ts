@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export class CreateWeatherForcastTable1740036508757
   implements MigrationInterface
@@ -6,7 +11,7 @@ export class CreateWeatherForcastTable1740036508757
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'weather_forecast',
+        name: 'forecast',
         columns: [
           {
             name: 'id',
@@ -15,28 +20,8 @@ export class CreateWeatherForcastTable1740036508757
             default: 'gen_random_uuid()',
           },
           {
-            name: 'name',
-            type: 'varchar',
-            isNullable: false,
-          },
-          {
-            name: 'region',
-            type: 'varchar',
-            isNullable: false,
-          },
-          {
-            name: 'country',
-            type: 'varchar',
-            isNullable: false,
-          },
-          {
-            name: 'lon',
-            type: 'float',
-            isNullable: false,
-          },
-          {
-            name: 'lat',
-            type: 'float',
+            name: 'weather_id',
+            type: 'uuid',
             isNullable: false,
           },
           {
@@ -60,17 +45,6 @@ export class CreateWeatherForcastTable1740036508757
             isNullable: false,
           },
           {
-            name: 'wind_kph',
-            type: 'decimal',
-            isNullable: false,
-          },
-          {
-            name: 'wind_dir',
-            type: 'enum',
-            enum: ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'],
-            isNullable: false,
-          },
-          {
             name: 'precip_mm',
             type: 'decimal',
             isNullable: false,
@@ -81,17 +55,27 @@ export class CreateWeatherForcastTable1740036508757
             isNullable: false,
           },
           {
+            name: 'temp_f',
+            type: 'decimal',
+            isNullable: false,
+          },
+          {
             name: 'temp_feel_c',
             type: 'decimal',
             isNullable: false,
           },
           {
-            name: 'windchill_c',
+            name: 'temp_feel_f',
             type: 'decimal',
             isNullable: false,
           },
           {
-            name: 'heatindex_c',
+            name: 'heat_index_c',
+            type: 'decimal',
+            isNullable: false,
+          },
+          {
+            name: 'heat_index_f',
             type: 'decimal',
             isNullable: false,
           },
@@ -101,8 +85,13 @@ export class CreateWeatherForcastTable1740036508757
             isNullable: false,
           },
           {
-            name: 'gust_kph',
-            type: 'decimal',
+            name: 'date',
+            type: 'date',
+            isNullable: false,
+          },
+          {
+            name: 'time',
+            type: 'time',
             isNullable: false,
           },
           {
@@ -124,9 +113,27 @@ export class CreateWeatherForcastTable1740036508757
         ],
       }),
     );
+    await queryRunner.createForeignKey(
+      'forecast',
+      new TableForeignKey({
+        columnNames: ['weather_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'weather',
+        onDelete: 'CASCADE',
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    const table = await queryRunner.getTable('forecast');
+    const foreignKey = table?.foreignKeys.find((fk) =>
+      fk.columnNames.includes('weather_id'),
+    );
+
+    if (foreignKey) {
+      await queryRunner.dropForeignKey('forecast', foreignKey);
+    }
+
     await queryRunner.dropTable('weather_forecast');
   }
 }

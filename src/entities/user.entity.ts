@@ -2,11 +2,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserPreferences } from './userPreference.entity';
 
 @Entity()
 export class Users {
@@ -33,7 +31,4 @@ export class Users {
 
   @Column({ type: 'boolean' })
   deleted: boolean;
-
-  @OneToMany(() => UserPreferences, (preference) => preference.user)
-  preferences: UserPreferences[];
 }

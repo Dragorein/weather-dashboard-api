@@ -23,6 +23,7 @@ export class AuthRepository {
         },
       })
       .catch((error) => {
+        console.log('error', error.message);
         throw new Error(error.message);
       });
 
@@ -32,9 +33,12 @@ export class AuthRepository {
   async create(body: IAuthCreate): Promise<Users> {
     const data = this.authRepository.create(body);
 
-    return this.authRepository.save(data).catch((error) => {
-      throw new Error(error.message);
-    });
+    return this.authRepository
+      .insert(data)
+      .then((result) => result.raw)
+      .catch((error) => {
+        throw new Error(error.message);
+      });
   }
 
   async updatePassword(id: string, body: IAuthUpdatePassword): Promise<Users> {

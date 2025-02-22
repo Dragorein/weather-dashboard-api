@@ -1,5 +1,5 @@
 export class ErrorData {
-    info?: string;
-    message?: string;
-    data?: any;
+  info?: string;
+  message?: string;
+  data?: any;
 }

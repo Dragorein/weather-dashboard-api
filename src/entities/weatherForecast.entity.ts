@@ -1,31 +1,24 @@
-import { EWindDirection } from 'src/common/enums/weather.enum';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Weather } from './weather.entity';
 
-@Entity('weather')
-export class WeatherForecast {
+@Entity('forecast')
+export class Forecast {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  name: string;
-
-  @Column()
-  region: string;
-
-  @Column()
-  country: string;
-
-  @Column()
-  lon: number;
-
-  @Column()
-  lat: number;
+  @ManyToOne(() => Weather, (weather) => weather.forecasts, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'weather_id' })
+  weather: Weather;
 
   @Column()
   condition: string;
@@ -33,38 +26,41 @@ export class WeatherForecast {
   @Column()
   condition_img: string;
 
-  @Column()
+  @Column({ type: 'int' })
   humidity: number;
 
-  @Column()
+  @Column({ type: 'int' })
   cloud: number;
 
-  @Column()
-  wind_kph: number;
-
-  @Column({ type: 'enum', enum: EWindDirection })
-  wind_dir: EWindDirection;
-
-  @Column()
+  @Column({ type: 'float' })
   precip_mm: number;
 
-  @Column()
+  @Column({ type: 'float' })
   temp_c: number;
 
-  @Column()
+  @Column({ type: 'float' })
+  temp_f: number;
+
+  @Column({ type: 'float' })
   temp_feel_c: number;
 
-  @Column()
-  windchill_c: number;
+  @Column({ type: 'float' })
+  temp_feel_f: number;
 
-  @Column()
-  heatindex_c: number;
+  @Column({ type: 'float' })
+  heat_index_c: number;
 
-  @Column()
+  @Column({ type: 'float' })
+  heat_index_f: number;
+
+  @Column({ type: 'float' })
   uv: number;
 
-  @Column()
-  gust_kph: number;
+  @Column({ type: 'date' })
+  date: string;
+
+  @Column({ type: 'time' })
+  time: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

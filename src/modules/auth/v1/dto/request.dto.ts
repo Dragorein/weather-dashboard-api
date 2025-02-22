@@ -1,10 +1,11 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class ReqCreateAuthDTO {
   @IsNotEmpty()
   name: string;
 
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @IsNotEmpty()
@@ -13,6 +14,7 @@ export class ReqCreateAuthDTO {
 
 export class ReqLoginAuthDTO {
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @IsNotEmpty()
