@@ -1,6 +1,6 @@
-# TODO App with NestJS, TypeORM, and MySQL
+# Weather dashboard api with NestJS, TypeORM, and PostgreSql
 
-This project is a simple Weather dashboard api built with **NestJS**, **TypeORM**, and **MySQL**. It includes basic authentication and using third party OpenWeather API.
+This project is a simple Weather dashboard api built with **NestJS**, **TypeORM**, and **PostgeSql**. It includes basic authentication and using third party OpenWeather API.
 
 ### Prerequisites
 
@@ -17,11 +17,9 @@ Ensure you have the following tools installed:
 npm install
 ```
 
-2.	Set up the .env file:
+2.	Set up the .env file, the structure is in the .env.example
 
-3.	Apply TypeORM migrations:
-
-4.	Start the application:
+3.	Start the application:
 ```bash
 npm run start:dev
 ```
