@@ -14,8 +14,6 @@ export class WeatherServiceV1 {
   constructor(private readonly weatherRepository: WeatherRepository) {}
 
   async getForecast(location: string) {
-    console.log(location);
-
     const response: forecastWeatherI = await GetForecastWeather(
       location,
       false,
@@ -40,7 +38,6 @@ export class WeatherServiceV1 {
   }
 
   async findForecast(id: string) {
-    console.log('id', id);
     return await this.weatherRepository
       .findForecast(id)
       .then((result) => forecastMappingSelect(result));
