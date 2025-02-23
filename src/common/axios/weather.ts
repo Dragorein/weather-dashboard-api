@@ -37,7 +37,7 @@ const GetForecastWeather = async (location: string, aqi: boolean = true) => {
 
     return response.data;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error?.response?.data?.error?.message);
   }
 };
 
