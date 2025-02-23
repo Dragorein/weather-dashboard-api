@@ -13,7 +13,11 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ResponseSuccessInterceptor());
   app.useGlobalFilters(new ResponseErrorInterceptor());
   app.setGlobalPrefix('');
-  app.enableCors();
+  app.enableCors({
+    origin: process.env.FRONTEND_URL,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
 
   const port = process.env.PORT;
 

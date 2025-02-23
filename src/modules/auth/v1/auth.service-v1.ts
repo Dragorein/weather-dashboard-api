@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   IAuthCreate,
   IAuthLogin,
-  IAuthUpdatePassword,
+  // IAuthUpdatePassword,
 } from './interface/auth.interface';
 import { Users } from 'src/entities/user.entity';
 import { ComparePassword, HashPassword } from 'src/lib/bcrypt/bcrypt';
@@ -57,24 +57,12 @@ export class AuthServiceV1 {
 
       await this.authRepository.login(checkExist.id, token);
 
-      return token;
+      return {
+        name: checkExist.name,
+        token,
+      };
     } catch (error) {
       throw new Error(error.message);
     }
-  }
-
-  async findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  async update(id: number, updateAuthI: IAuthUpdatePassword) {
-    return {
-      msg: `This action updates a #${id} auth`,
-      input: updateAuthI,
-    };
-  }
-
-  async remove(id: number) {
-    return `This action removes a #${id} auth`;
   }
 }

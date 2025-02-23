@@ -1,9 +1,15 @@
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Param,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { WeatherServiceV1 } from './weather.service-v1';
 import { ReqCreateWeatherDTO } from './dto/request.dto';
 import { AuthGuard } from 'src/middlewares/guards/auth.guard';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import { CurrentUserEnum } from 'src/common/enums';
 
 @Controller('v1/weather')
 export class WeatherControllerV1 {
@@ -11,15 +17,19 @@ export class WeatherControllerV1 {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(
-    @CurrentUser(CurrentUserEnum.userId) userId: string,
-    @Body() reqCreateWeatherDto: ReqCreateWeatherDTO,
-  ) {
+  create(@Body() reqCreateWeatherDto: ReqCreateWeatherDTO) {
     return this.weatherService.getForecast(reqCreateWeatherDto.location);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.weatherService.findAll();
+  findWeathers() {
+    return this.weatherService.findWeather();
+  }
+
+  @UseGuards(AuthGuard)
+  @Get(':id')
+  findForecast(@Param('id', ParseUUIDPipe) id: string) {
+    return this.weatherService.findForecast(id);
   }
 }

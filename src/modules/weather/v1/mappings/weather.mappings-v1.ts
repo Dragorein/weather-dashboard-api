@@ -5,7 +5,7 @@ import {
 import { Weather } from 'src/entities/weather.entity';
 import { Forecast } from 'src/entities/weatherForecast.entity';
 
-export const weatherMapping = ({
+export const weatherMappingInsert = ({
   location,
   current,
 }: currentWeatherI): Weather => {
@@ -34,7 +34,7 @@ export const weatherMapping = ({
   return weatherData;
 };
 
-export const forecastMapping = (
+export const forecastMappingInsert = (
   weatherId: Weather,
   { forecast }: forecastWeatherI,
 ): Forecast[] => {
@@ -63,4 +63,55 @@ export const forecastMapping = (
   });
 
   return forecastData;
+};
+
+export const weatherMappingSelect = (data: Weather[]): Partial<Weather>[] => {
+  const formattedData = data.map((item) => ({
+    id: item.id,
+    city: item.city,
+    region: item.region,
+    country: item.country,
+    lon: item.lon,
+    lat: item.lat,
+    condition: item.condition,
+    condition_img: item.condition_img,
+    humidity: item.humidity,
+    cloud: item.cloud,
+    precip_mm: item.precip_mm,
+    temp_c: item.temp_c,
+    temp_f: item.temp_f,
+    temp_feel_c: item.temp_feel_c,
+    temp_feel_f: item.temp_feel_f,
+    heat_index_c: item.heat_index_c,
+    heat_index_f: item.heat_index_f,
+    uv: item.uv,
+    date: item.date,
+    time: item.time,
+  }));
+
+  return formattedData;
+};
+
+export const forecastMappingSelect = (
+  data: Forecast[],
+): Partial<Forecast>[] => {
+  const formattedData = data.map((item) => ({
+    id: item.id,
+    condition: item.condition,
+    condition_img: item.condition_img,
+    humidity: item.humidity,
+    cloud: item.cloud,
+    precip_mm: item.precip_mm,
+    temp_c: item.temp_c,
+    temp_f: item.temp_f,
+    temp_feel_c: item.temp_feel_c,
+    temp_feel_f: item.temp_feel_f,
+    heat_index_c: item.heat_index_c,
+    heat_index_f: item.heat_index_f,
+    uv: item.uv,
+    date: item.date,
+    time: item.time,
+  }));
+
+  return formattedData;
 };

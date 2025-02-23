@@ -20,16 +20,35 @@ export class WeatherRepository {
   }
 
   async findAllWeather(): Promise<Weather[]> {
-    return await this.weatherRepository.find();
+    return await this.weatherRepository.find({
+      order: { created_at: 'desc' },
+    });
   }
 
   async findForecast(id: string): Promise<Forecast[]> {
-    const data = await this.findWeather(id);
-
     return await this.forecastRepository.find({
       where: {
-        weather: data,
+        weather: {
+          id: id,
+        },
       },
+      select: [
+        'id',
+        'condition',
+        'condition_img',
+        'humidity',
+        'cloud',
+        'precip_mm',
+        'temp_c',
+        'temp_f',
+        'temp_feel_c',
+        'temp_feel_f',
+        'heat_index_c',
+        'heat_index_f',
+        'uv',
+        'date',
+        'time',
+      ],
     });
   }
 

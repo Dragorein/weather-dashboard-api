@@ -1,17 +1,14 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
+  // Patch,
 } from '@nestjs/common';
 import { AuthServiceV1 } from './auth.service-v1';
 import {
   ReqCreateAuthDTO,
   ReqLoginAuthDTO,
-  ReqUpdatePasswordAuthDTO,
+  // ReqUpdatePasswordAuthDTO,
 } from './dto/request.dto';
 
 @Controller('v1/auth')
@@ -28,21 +25,11 @@ export class AuthControllerV1 {
     return this.authService.login(loginAuthDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
-
-  @Patch('password-update')
-  update(
-    @Param('id') id: string,
-    @Body() updatePasswordDto: ReqUpdatePasswordAuthDTO,
-  ) {
-    return this.authService.update(+id, updatePasswordDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
-  }
+  // @Patch('password-update')
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updatePasswordDto: ReqUpdatePasswordAuthDTO,
+  // ) {
+  //   return this.authService.update(+id, updatePasswordDto);
+  // }
 }

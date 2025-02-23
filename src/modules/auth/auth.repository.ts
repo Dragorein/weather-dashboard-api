@@ -15,17 +15,12 @@ export class AuthRepository {
   ) {}
 
   async checkEmail(email: string): Promise<Users> {
-    const data = this.authRepository
-      .findOne({
-        where: {
-          email: email,
-          deleted: false,
-        },
-      })
-      .catch((error) => {
-        console.log('error', error.message);
-        throw new Error(error.message);
-      });
+    const data = this.authRepository.findOne({
+      where: {
+        email: email,
+        deleted: false,
+      },
+    });
 
     return data;
   }
@@ -63,16 +58,12 @@ export class AuthRepository {
 
   async login(id: string, token: string) {
     const oldData = await this.authRepository.findOne({ where: { id: id } });
-    const data = this.authRepository
-      .update(
-        {
-          id: id,
-        },
-        { ...oldData, token: token, updated_at: new Date() },
-      )
-      .catch((error) => {
-        throw new Error(error.message);
-      });
+    const data = this.authRepository.update(
+      {
+        id: id,
+      },
+      { ...oldData, token: token, updated_at: new Date() },
+    );
 
     return data;
   }
