@@ -4,10 +4,10 @@ import {
   IAuthLogin,
   // IAuthUpdatePassword,
 } from './interface/auth.interface';
-import { Users } from 'src/entities/user.entity';
-import { ComparePassword, HashPassword } from 'src/lib/bcrypt/bcrypt';
+import { ComparePassword } from 'src/lib/bcrypt/bcrypt';
 import { AuthRepository } from '../auth.repository';
 import { JWTSign } from 'src/lib/jwt/jwt';
+import { userRegistration } from './mappings/auth.mapping';
 
 @Injectable()
 export class AuthServiceV1 {
@@ -23,10 +23,7 @@ export class AuthServiceV1 {
         throw new Error('Email already taken');
       }
 
-      const registerBody = new Users();
-      registerBody.name = createAuthI.name;
-      registerBody.email = createAuthI.email;
-      registerBody.password = await HashPassword(createAuthI.password);
+      const registerBody = await userRegistration(createAuthI);
 
       const data = await this.authRepository.create(registerBody);
 
